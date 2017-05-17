@@ -10,8 +10,9 @@ c = gets.chomp.to_f
 discriminant = b**2 - 4 * a * c
 
 if discriminant > 0
-  first_sqrt = (-b + Math.sqrt(discriminant)) / (2 * a)
-  second_sqrt = (-b - Math.sqrt(discriminant)) / (2 * a)
+  discriminant_sqrt = Math.sqrt(discriminant)
+  first_sqrt = (-b + discriminant_sqrt) / (2 * a)
+  second_sqrt = (-b - discriminant_sqrt) / (2 * a)
   puts "Discriminant is #{discriminant}, first square root is #{first_sqrt}," \
 "second square root is #{second_sqrt}"
 elsif discriminant.zero?
