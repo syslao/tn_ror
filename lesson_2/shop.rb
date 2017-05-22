@@ -4,8 +4,7 @@ total_price = 0
 loop do
   print 'Please enter item name or stop to exit: '
   name = gets.chomp
-  case name
-  when 'stop'
+  if name == 'stop'
     break
   else
     print 'Please enter unit price: '
@@ -13,6 +12,9 @@ loop do
 
     print 'Please enter quantity: '
     quantity = gets.chomp.to_f
+
+# Подразумевается, что можно добавлять одинаковые позиции товаров 
+#   и цена у них одинаковая
 
     if product.key?(name)
       product[name][product[name].keys[0]] = product[name].values[0] + quantity
