@@ -19,13 +19,9 @@ class Station
     @trains_on_station.each { |train| puts "Number #{train.number}" }
   end
 
-  def trains_type
-    if @trains_on_station.empty?
-      puts '0 trains'
-      return
-    end
-    result = @trains_on_station.each_with_object(Hash.new(0)) { |trains, counts| counts[trains.type] += 1 }
-    result.each { |k, v| puts "Trains of type #{k}: #{v}" }
+  def trains_type(type)
+    result = @trains_on_station.select { |train| train.type == type }
+    puts "Trains of type #{type}: #{result.length}"
   end
 end
 
@@ -52,7 +48,7 @@ class Route
 end
 
 class Train
-  attr_reader :number, :quantity, :type
+  attr_reader :number, :quantity, :type, :current_station, :next_station, :prev_station
   attr_writer :speed
   def initialize(number, type, quantity, speed = 0)
     @number = number.to_s
@@ -73,13 +69,14 @@ class Train
     puts @quantity
   end
 
-  def wagons(arg)
+  def add_wagon
     return puts 'Train in motion' if @speed > 0
-    if arg == 'add'
-      @quantity += 1
-    elsif arg == 'remove'
-      @quantity > 0 ? @quantity -= 1 : (puts 'There are no more wagons to remove')
-    end
+    @quantity += 1
+  end
+
+  def remove_wagon
+    return puts 'Train in motion' if @speed > 0
+    @quantity > 0 ? @quantity -= 1 : (puts 'There are no more wagons to remove')
   end
 
   def add_route(route)
@@ -109,17 +106,5 @@ class Train
       @prev_station = index_prev_station.zero? ? nil : @route_list[index_prev_station - 1]
       @current_station = @route_list[index_prev_station]
     end
-  end
-
-  def current_station_name
-    puts @current_station.name
-  end
-
-  def next_station_name
-    puts @next_station ? @next_station.name : 'its last station'
-  end
-
-  def prev_station_name
-    puts @prev_station ? @prev_station.name : 'its first station'
   end
 end
