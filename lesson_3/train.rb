@@ -1,12 +1,10 @@
 class Station
-  attr_accessor :trains_on_station
-  attr_reader :name
+  attr_reader :name, :trains_on_station
 
   def initialize(name)
     @name = name
+    @trains_on_station = []
   end
-
-  @trains_on_station = []
 
   def add_train(train)
     @trains_on_station << train
@@ -22,6 +20,10 @@ class Station
   end
 
   def trains_type
+    if @trains_on_station.empty?
+      puts '0 trains'
+      return
+    end
     result = @trains_on_station.each_with_object(Hash.new(0)) { |trains, counts| counts[trains.type] += 1 }
     result.each { |k, v| puts "Trains of type #{k}: #{v}" }
   end
@@ -37,7 +39,11 @@ class Route
   end
 
   def del_station(station)
-    @route_list.delete(station)
+    if @route_list.length == 2
+      puts 'cant delete, only 2 stations left'
+    else
+      @route_list.delete(station)
+    end
   end
 
   def stations_list
@@ -47,14 +53,12 @@ end
 
 class Train
   attr_reader :number, :quantity, :type
-  attr_accessor :speed, :current_station, :route_list
-
+  attr_writer :speed
   def initialize(number, type, quantity, speed = 0)
-    @number = number
+    @number = number.to_s
     @type = type.to_sym
     @quantity = quantity
     @speed = speed
-    @current_station = {}
   end
 
   def stop
@@ -81,15 +85,19 @@ class Train
   def add_route(route)
     @route_list = route.stations_list
     @current_station = @route_list[0]
+    @next_station = @route_list[1]
+    @prev_station = nil
   end
 
   def next
     if @route_list.index(@current_station) == @route_list.length - 1
-      puts "its last station"
+      puts 'its last station'
     else
       index_next_station = @route_list.index(@current_station) + 1
+      @next_station = @route_list[index_next_station + 1]
+      @prev_station = @current_station
       @current_station = @route_list[index_next_station]
-  end
+    end
   end
 
   def prev
@@ -97,13 +105,21 @@ class Train
       puts 'its first station'
     else
       index_prev_station = @route_list.index(@current_station) - 1
+      @next_station = @current_station
+      @prev_station = index_prev_station.zero? ? nil : @route_list[index_prev_station - 1]
       @current_station = @route_list[index_prev_station]
     end
   end
 
-  def next_station
+  def current_station_name
+    puts @current_station.name
   end
 
-  def prev_station
+  def next_station_name
+    puts @next_station ? @next_station.name : 'its last station'
+  end
+
+  def prev_station_name
+    puts @prev_station ? @prev_station.name : 'its first station'
   end
 end
