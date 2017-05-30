@@ -13,6 +13,7 @@ require_relative 'cargo_wagon'
 @routes = []
 
 def create_station
+  puts 'Введите название станции:'
   name = gets.capitalize
   station = Station.new(name)
   puts "Станция #{name} создана"
@@ -20,34 +21,42 @@ def create_station
 end
 
 def create_route
+  puts 'Введите название маршрута'
   name = gets.capitalize
-  station = Station.new(name)
-  puts "Станция #{name} создана"
-  @stations.push(station)
+  station = Route.new(name)
+  puts 'Маршрут создан'
+  @routes.push(station)
 end
+
+def create
 
 loop do
-puts 'Выберите действие:'
-puts '1 - Создать станцию' #done
-puts '2 - Создать маршрут'
-puts '3 - Редактировать маршрут (добавить/удалить станцию)'
-puts '4 - Создать поезд'
-puts '5 - Управление движением поезда'
-puts '6 - Добавить вагон'
-puts '7 - Отцепить вагон'
-puts '8 - Назначить поезду маршрут'
-puts '9 - Список всех станций c поездами'
-puts '0 - Выход'
+  puts 'Выберите действие:'
+  puts '1 - Создать станцию' #done
+  puts '2 - Создать маршрут'
+  puts '3 - Редактировать маршрут (добавить/удалить станцию)'
+  puts '4 - Создать поезд'
+  puts '5 - Управление движением поезда'
+  puts '6 - Добавить вагон'
+  puts '7 - Отцепить вагон'
+  puts '8 - Назначить поезду маршрут'
+  puts '9 - Список всех станций c поездами'
+  puts '0 - Выход'
 
-user_input = gets.to_i
+  user_input = gets.to_i
 
-case user_input
-  when 1
-    create_station
-  when 0
-    abort
-  else
-    puts "Неизвестная команда!"
+  case user_input
+    when 1
+      create_station
+    when 2
+      @stations.length > 1 ? create_route : (puts 'Для создания маршрута нужно минимум 2 станции')
+    when 3
+      route_edit
+    when 4
+      create_train
+    when 0
+      abort
+    else
+      puts 'Неизвестная команда!'
     end
 end
-
