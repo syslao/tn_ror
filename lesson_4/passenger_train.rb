@@ -1,3 +1,2 @@
 class PassengerTrain < Train
-
 end

@@ -1,11 +1,10 @@
 class Train
-  attr_reader :number, :quantity, :type, :current_station, :next_station, :prev_station
+  attr_reader :number, :current_station, :next_station, :prev_station, :wagons
   attr_writer :speed
-  def initialize(number, type, quantity, speed = 0)
+  def initialize(number, speed = 0)
     @number = number.to_s
-    @type = type.to_sym
-    @quantity = quantity
     @speed = speed
+    @wagons = []
   end
 
   def stop
@@ -17,17 +16,15 @@ class Train
   end
 
   def wagons_quantity
-    puts @quantity
-  end
-
-  def add_wagon
+    @wagons.length
+  end  def add_wagon(wagon)
     return puts 'Train in motion' if @speed > 0
-    @quantity += 1
+    @wagons.push(wagon)
   end
 
   def remove_wagon
     return puts 'Train in motion' if @speed > 0
-    @quantity > 0 ? @quantity -= 1 : (puts 'There are no more wagons to remove')
+    !@wagons.empty? ? @wagons.pop : (puts 'No more wagons')
   end
 
   def add_route(route)
@@ -59,25 +56,3 @@ class Train
     end
   end
 end
-
-class PassengerTrain < Train
-
-end
-
-class CargoTrain < Train
-
-end
-
-class Wagon
-end
-
-class PassengerWagon < Wagon
-
-end
-
-class CargoWagon < Wagon
-
-end
-
-
-
