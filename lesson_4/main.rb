@@ -39,7 +39,7 @@ def create_train
     @trains.push(CargoTrain.new(n))
   else
     puts 'Неизвестный тип поезда!'
-    end
+  end
 end
 
 def edit_route
@@ -137,7 +137,7 @@ loop do
   when 1
     create_station
   when 2
-    @stations.length > 1 ? create_route : (puts 'Для создания маршрута нужно минимум 2 станции')
+    @stations.length > 1 ? create_route : (puts 'Для создания маршрута нужно минимум 2 станции') # без сскобок вылезает ошибка
   when 3
     edit_route
   when 4
@@ -158,5 +158,5 @@ loop do
     abort
   else
     puts 'Неизвестная команда!'
-    end
+  end
 end

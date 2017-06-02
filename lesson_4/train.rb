@@ -17,7 +17,9 @@ class Train
 
   def wagons_quantity
     @wagons.length
-  end  def add_wagon(wagon)
+  end
+
+  def add_wagon(wagon)
     return puts 'Train in motion' if @speed > 0
     @wagons.push(wagon)
   end
