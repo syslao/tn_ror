@@ -26,7 +26,7 @@ class Train
 
   def remove_wagon
     return puts 'Train in motion' if @speed > 0
-    !@wagons.empty? ? @wagons.pop : (puts 'No more wagons')
+    @wagons.empty? ? puts('No more wagons') : @wagons.pop
   end
 
   def add_route(route)

@@ -5,7 +5,8 @@ class Route
   end
 
   def add_station(station)
-    @route_list.include?(station) ? (puts 'already in route list') : @route_list.insert(-2, station)
+    return puts 'already in route list' if @route_list.include?(station)
+    @route_list.insert(-2, station)
   end
 
   def del_station(station)

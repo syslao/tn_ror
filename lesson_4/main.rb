@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require_relative 'menu'
 require_relative 'station'
 require_relative 'route'
 require_relative 'train'
@@ -118,26 +119,14 @@ def stations_with_trains_list
 end
 
 loop do
-  puts 'Выберите действие:'
-  puts '1 - Создать станцию'
-  puts '2 - Создать маршрут'
-  puts '3 - Редактировать маршрут (добавить/удалить станцию)'
-  puts '4 - Создать поезд'
-  puts '5 - Управление движением поезда'
-  puts '6 - Добавить вагон'
-  puts '7 - Отцепить вагон'
-  puts '8 - Назначить поезду маршрут'
-  puts '9 - Список всех станций'
-  puts '10 - Список поездов на станции'
-  puts '0 - Выход'
-
+  Menu.menu_print
   user_input = gets.to_i
 
   case user_input
   when 1
     create_station
   when 2
-    @stations.length > 1 ? create_route : (puts 'Для создания маршрута нужно минимум 2 станции') # без сскобок вылезает ошибка
+    @stations.length > 1 ? create_route : puts('Для создания маршрута нужно минимум 2 станции')
   when 3
     edit_route
   when 4

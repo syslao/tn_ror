@@ -1,26 +1,26 @@
 class Station
-  attr_reader :name, :trains_on_station
+  attr_reader :name, :trains
 
   def initialize(name)
     @name = name
-    @trains_on_station = []
+    @trains = []
   end
 
   def add_train(train)
-    @trains_on_station << train
+    @trains << train
   end
 
   def send_train(train)
-    @trains_on_station.delete(train)
+    @trains.delete(train)
   end
 
   def trains
-    puts "#{@trains_on_station.length} train/s on station"
-    @trains_on_station.each { |train| puts "Number #{train.number}" }
+    puts "#{@trains.length} train/s on station"
+    @trains.each { |train| puts "Number #{train.number}" }
   end
 
   def trains_type(type)
-    result = @trains_on_station.select { |train| train.type == type }
+    result = @trains.select { |train| train.type == type }
     puts "Trains of type #{type}: #{result.length}"
   end
 end
