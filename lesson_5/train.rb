@@ -11,7 +11,8 @@ class Train
   end
 
   def self.find(number)
-    @@instances.select { |train| train.number == number.to_s}
+    result = @@instances.select { |train| train.number == number.to_s}
+    result == [] ? nil : result
   end
 
   def stop
