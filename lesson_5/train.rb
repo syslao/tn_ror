@@ -1,4 +1,5 @@
 class Train
+  include Manufacturer
   attr_reader :number, :current_station, :next_station, :prev_station, :wagons
   attr_writer :speed
   @@instances = []
