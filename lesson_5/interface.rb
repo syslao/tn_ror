@@ -1,4 +1,5 @@
-#encoding: utf-8
+# encoding: utf-8
+
 class Interface
 
   def initialize
@@ -156,5 +157,4 @@ class Interface
       puts 'Неизвестная команда!'
     end
   end
-
-  end
+end
