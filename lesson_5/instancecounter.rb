@@ -6,7 +6,7 @@ module InstanceCounter
 
   module ClassMethods
     def instances
-      puts @instances
+      @instances
     end
 
     private

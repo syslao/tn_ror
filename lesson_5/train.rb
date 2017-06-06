@@ -1,19 +1,18 @@
 class Train
-  include Manufacturer
+  
   attr_reader :number, :current_station, :next_station, :prev_station, :wagons
   attr_writer :speed
-  @@instances = []
+  @@instances = {}
 
   def initialize(number, speed = 0)
     @number = number.to_s
     @speed = speed
     @wagons = []
-    @@instances << self
+    @@instances[number] = self
   end
 
   def self.find(number)
-    result = @@instances.select { |train| train.number == number.to_s}
-    result == [] ? nil : result
+    @@instances[number]
   end
 
   def stop
