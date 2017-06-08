@@ -1,7 +1,7 @@
 class Train
   include Manufacturer
   include InstanceCounter
-  include Validate  
+  include Validate
   attr_reader :number, :current_station, :next_station, :prev_station, :wagons
   attr_writer :speed
   @@instances = {}
@@ -21,8 +21,8 @@ class Train
   end
 
   def validate!
-    raise "Number can't be nil" if number.nil?
-    raise "Number has invalid format" if number !~ NUMBER_FORMAT
+    raise 'Number cant be nil' if number.nil?
+    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
     true
   end
 
@@ -39,13 +39,13 @@ class Train
   end
 
   def add_wagon(wagon)
-    return puts 'Train in motion' if @speed > 0
+    raise 'Train in motion' if @speed > 0
     @wagons.push(wagon)
   end
 
   def remove_wagon
-    return puts 'Train in motion' if @speed > 0
-    @wagons.empty? ? puts('No more wagons') : @wagons.pop
+    raise 'Train in motion' if @speed > 0
+    @wagons.empty? ? raise('No more wagons') : @wagons.pop
   end
 
   def add_route(route)
@@ -56,24 +56,18 @@ class Train
   end
 
   def next
-    if @route_list.index(@current_station) == @route_list.length - 1
-      puts 'its last station'
-    else
-      index_next_station = @route_list.index(@current_station) + 1
-      @next_station = @route_list[index_next_station + 1]
-      @prev_station = @current_station
-      @current_station = @route_list[index_next_station]
-    end
+    raise 'its last station' if @route_list.index(@current_station) == @route_list.length - 1
+    index_next_station = @route_list.index(@current_station) + 1
+    @next_station = @route_list[index_next_station + 1]
+    @prev_station = @current_station
+    @current_station = @route_list[index_next_station]
   end
 
   def prev
-    if @route_list.index(@current_station).zero?
-      puts 'its first station'
-    else
-      index_prev_station = @route_list.index(@current_station) - 1
-      @next_station = @current_station
-      @prev_station = index_prev_station.zero? ? nil : @route_list[index_prev_station - 1]
-      @current_station = @route_list[index_prev_station]
-    end
+    raise 'its first station' if @route_list.index(@current_station).zero?
+    index_prev_station = @route_list.index(@current_station) - 1
+    @next_station = @current_station
+    @prev_station = index_prev_station.zero? ? nil : @route_list[index_prev_station - 1]
+    @current_station = @route_list[index_prev_station]
   end
 end

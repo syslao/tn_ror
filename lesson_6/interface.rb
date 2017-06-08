@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 class Interface
-
   def initialize
     @stations = []
     @routes = []
@@ -44,26 +43,19 @@ class Interface
     n, t = gets.split(',')
     case t.to_i
     when 1
-      begin
       new_train = PassengerTrain.new(n)
       @trains.push(new_train)
       puts "Пассажирский поезд номер #{new_train.number} создан!"
-      rescue => e
-        puts e.message
-        create_train
-      end
     when 2
-      begin
       new_train = CargoTrain.new(n)
       @trains.push(new_train)
       puts "Грузовой поезд номер #{new_train.number} создан!"
-      rescue => e
-        puts e.message
-        create_train
-      end
     else
       puts 'Неизвестный тип поезда!'
     end
+  rescue => e
+    puts e.message
+    create_train
   end
 
   def edit_route
@@ -81,6 +73,9 @@ class Interface
     else
       puts 'Неизвестный тип действия!'
     end
+  rescue => e
+    puts e.message
+    edit_route
   end
 
   def move_train
@@ -94,6 +89,9 @@ class Interface
     else
       puts 'Неизвестный тип действия!'
     end
+  rescue => e
+    puts e.message
+    move_train
   end
 
   def assign_route
@@ -123,12 +121,18 @@ class Interface
     train.add_wagon(PassengerWagon.new) if train.class == PassengerTrain
     train.add_wagon(CargoWagon.new) if train.class == CargoTrain
     puts "У поезда #{train.wagons_quantity} вагона/ов"
+  rescue => e
+    puts e.message
+    return
   end
 
   def remove_wagon
     train = choise_train
     train.remove_wagon
     puts "У поезда #{train.wagons_quantity} вагона/ов"
+  rescue => e
+    puts e.message
+    return
   end
 
   def all_stations_list
