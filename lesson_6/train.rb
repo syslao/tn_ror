@@ -2,7 +2,7 @@ class Train
   include Manufacturer
   include InstanceCounter
   include Validate
-  attr_reader :number, :current_station, :next_station, :prev_station, :wagons
+  attr_reader :number, :current_station, :next_station, :prev_station, :wagons, :type
   attr_writer :speed
   @@instances = {}
   NUMBER_FORMAT = /[\d[A-Z]]{3}-?[\d[A-Z]]{2}/i
