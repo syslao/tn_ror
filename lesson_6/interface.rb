@@ -44,9 +44,23 @@ class Interface
     n, t = gets.split(',')
     case t.to_i
     when 1
-      @trains.push(PassengerTrain.new(n))
+      begin
+      new_train = PassengerTrain.new(n)
+      @trains.push(new_train)
+      puts "Пассажирский поезд номер #{new_train.number} создан!"
+      rescue => e
+        puts e.message
+        create_train
+      end
     when 2
-      @trains.push(CargoTrain.new(n))
+      begin
+      new_train = CargoTrain.new(n)
+      @trains.push(new_train)
+      puts "Грузовой поезд номер #{new_train.number} создан!"
+      rescue => e
+        puts e.message
+        create_train
+      end
     else
       puts 'Неизвестный тип поезда!'
     end
