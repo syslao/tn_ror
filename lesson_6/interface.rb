@@ -98,24 +98,6 @@ class Interface
     choise_train.add_route(choise_route)
   end
 
-  def choise_station
-    puts 'Выберите станцию из списка'
-    @stations.each.with_index(1) { |val, index| puts "#{index} - #{val.name}" }
-    @stations[gets.chomp.to_i - 1]
-  end
-
-  def choise_train
-    puts 'Выберите поезд из списка'
-    @trains.each.with_index(1) { |val, index| puts "#{index} - #{val.number}" }
-    @trains[gets.chomp.to_i - 1]
-  end
-
-  def choise_route
-    puts 'Выберите маршрут из списка'
-    @routes.each.with_index(1) { |val, index| print "#{index}. #{val.route_list[0].name} - #{val.route_list[-1].name}" }
-    @routes[gets.chomp.to_i - 1]
-  end
-
   def add_wagon
     train = choise_train
     train.add_wagon(PassengerWagon.new) if train.class == PassengerTrain
@@ -174,5 +156,25 @@ class Interface
     else
       puts 'Неизвестная команда!'
     end
+  end
+
+  private
+
+  def choise_station
+    puts 'Выберите станцию из списка'
+    @stations.each.with_index(1) { |val, index| puts "#{index} - #{val.name}" }
+    @stations[gets.chomp.to_i - 1]
+  end
+
+  def choise_train
+    puts 'Выберите поезд из списка'
+    @trains.each.with_index(1) { |val, index| puts "#{index} - #{val.number}" }
+    @trains[gets.chomp.to_i - 1]
+  end
+
+  def choise_route
+    puts 'Выберите маршрут из списка'
+    @routes.each.with_index(1) { |val, index| print "#{index}. #{val.route_list[0].name} - #{val.route_list[-1].name}" }
+    @routes[gets.chomp.to_i - 1]
   end
 end
