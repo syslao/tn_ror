@@ -11,9 +11,9 @@ class Train
     @number = number.to_s.upcase
     @speed = speed
     @wagons = []
-    register_instance
-    @@instances[number] = self
     validate!
+    @@instances[number] = self
+    register_instance
   end
 
   def self.find(number)

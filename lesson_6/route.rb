@@ -2,8 +2,8 @@ class Route
   include Validate
   attr_reader :route_list
   def initialize(first_station, last_station)
-    validate!
     @route_list = [first_station, last_station]
+    validate!
   end
 
   def add_station(station)
