@@ -11,19 +11,13 @@ class Train
     @number = number.to_s.upcase
     @speed = speed
     @wagons = []
+    register_instance
     @@instances[number] = self
     validate!
-    register_instance
   end
 
   def self.find(number)
     @@instances[number]
-  end
-
-  def validate!
-    raise 'Number cant be nil' if number.nil?
-    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
-    true
   end
 
   def stop
@@ -69,5 +63,13 @@ class Train
     @next_station = @current_station
     @prev_station = index_prev_station.zero? ? nil : @route_list[index_prev_station - 1]
     @current_station = @route_list[index_prev_station]
+  end
+
+  private
+
+  def validate!
+    raise 'Number cant be nil' if number.nil?
+    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
+    true
   end
 end
