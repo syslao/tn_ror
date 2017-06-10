@@ -3,7 +3,7 @@ class CargoWagon < Wagon
   attr_reader :payload, :taked_payload
   def initialize(payload)
     @type = :cargo
-    @payload = payload
+    @payload = payload.to_i
     @taked_payload = 0
     validate!
   end

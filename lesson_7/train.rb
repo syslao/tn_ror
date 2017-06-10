@@ -34,6 +34,7 @@ class Train
 
   def add_wagon(wagon)
     raise 'Train in motion' if @speed > 0
+    raise 'Type of train and wagon not equal' if self.type != wagon.type
     @wagons.push(wagon)
   end
 

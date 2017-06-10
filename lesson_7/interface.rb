@@ -5,6 +5,7 @@ class Interface
     @stations = []
     @routes = []
     @trains = []
+    @wagons = []
   end
 
   def menu
@@ -14,12 +15,13 @@ class Interface
     puts '3 - Редактировать маршрут (добавить/удалить станцию)'
     puts '4 - Создать поезд'
     puts '5 - Управление движением поезда'
-    puts '6 - Добавить вагон'
-    puts '7 - Отцепить вагон'
-    puts '8 - Назначить поезду маршрут'
-    puts '9 - Список всех станций'
-    puts '10 - Список поездов на станции'
-    puts '0 - Выход'
+    puts '6 - Создать вагон'
+    puts '7 - Добавить вагон'
+    puts '8 - Отцепить вагон'
+    puts '9 - Назначить поезду маршрут'
+    puts '10 - Список всех станций'
+    puts '11 - Список поездов на станции'
+    puts '12 - Выход'
   end
 
   def create_station
@@ -100,12 +102,31 @@ class Interface
 
   def add_wagon
     train = choise_train
-    train.add_wagon(PassengerWagon.new) if train.class == PassengerTrain
-    train.add_wagon(CargoWagon.new) if train.class == CargoTrain
+    train.add_wagon(choise_wagon)
     puts "У поезда #{train.wagons_quantity} вагона/ов"
   rescue => e
     puts e.message
     return
+  end
+
+  def create_wagon
+    puts 'Выберете тип вагона (1 - пассажирский, 2 - грузовой) и количество мест или объем через запятую'
+    t, v = gets.split(',')
+    case t.to_i
+    when 1
+      new_wagon = PassengerWagon.new(v)
+      @wagons.push(new_wagon)
+      puts "Пассажирский вагон на #{new_wagon.seats} мест создан!"
+    when 2
+      new_wagon = CargoWagon.new(v)
+      @wagons.push(new_wagon)
+      puts "Грузовой вагон с объемом #{new_wagon.payload} создан!"
+    else
+      puts 'Неизвестный тип вагона!'
+    end
+  rescue => e
+    puts e.message
+    create_train
   end
 
   def remove_wagon
@@ -142,14 +163,16 @@ class Interface
     when 5
       move_train
     when 6
-      add_wagon
+      create_wagon
     when 7
-      remove_wagon
+      add_wagon
     when 8
-      assign_route
+      remove_wagon
     when 9
-      all_stations_list
+      assign_route
     when 10
+      all_stations_list
+    when 11
       stations_with_trains_list
     when 0
       abort
@@ -176,5 +199,11 @@ class Interface
     puts 'Выберите маршрут из списка'
     @routes.each.with_index(1) { |val, index| print "#{index}. #{val.route_list[0].name} - #{val.route_list[-1].name}" }
     @routes[gets.chomp.to_i - 1]
+  end
+
+  def choise_wagon
+    puts 'Выберите вагон из списка'
+    @wagons.each.with_index(1) { |val, index| puts "#{index} - #{val.type}" }
+    @wagons[gets.chomp.to_i - 1]
   end
 end

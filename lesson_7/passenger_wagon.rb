@@ -3,7 +3,7 @@ class PassengerWagon < Wagon
   attr_reader :seats, :booked_seats
   def initialize(seats)
     @type = :passenger
-    @seats = seats
+    @seats = seats.to_i
     @booked_seats = 0
     validate!
   end
