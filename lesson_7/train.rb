@@ -65,6 +65,10 @@ class Train
     @current_station = @route_list[index_prev_station]
   end
 
+  def wagons_blk
+    @wagons.each { |wagon| yield(wagon) }
+  end
+
   private
 
   def validate!
