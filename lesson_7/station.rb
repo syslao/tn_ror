@@ -1,6 +1,7 @@
 class Station
   include Validate
-  attr_reader :name, :trains
+  attr_reader :name
+  attr_accessor :trains
   @@instances = []
 
   def initialize(name)
@@ -22,17 +23,13 @@ class Station
     @trains.delete(train)
   end
 
-  def trains
-    puts "#{@trains.length} train/s on station"
-    @trains.each { |train| puts "Number #{train.number}" }
-  end
-
   def trains_type(type)
     result = @trains.select { |train| train.type == type }
     puts "Trains of type #{type}: #{result.length}"
   end
 
   def trains_blk
+    raise 'Station is empty' if @trains.empty?
     @trains.each { |train| yield(train) }
   end
 

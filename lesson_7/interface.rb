@@ -21,7 +21,8 @@ class Interface
     puts '9 - Назначить поезду маршрут'
     puts '10 - Список всех станций'
     puts '11 - Список поездов на станции'
-    puts '12 - Выход'
+    puts '12 - Список вагонов у поезда'
+    puts '0 - Выход'
   end
 
   def create_station
@@ -143,9 +144,21 @@ class Interface
   end
 
   def stations_with_trains_list
-    station = choise_station
-    trains = @trains.select { |train| train.current_station == station }
-    puts "на станции #{station.name} - #{trains.length} поезда/ов"
+    choise_station.trains_blk { |train| puts "#{train.number} #{train.type} #{train.wagons.length}" }
+  rescue => e
+    puts e.message
+    return
+  end
+
+  def wagon_list
+    choise_train.wagons_blk(lambda_method)
+  end
+
+  def lambda_method  #рубокоп ругается на многострочные лямды и говорит использовать метод, тут я в замешательстве
+  ->wagon, index {
+    puts "#{index} #{wagon.type} #{wagon.seats} #{wagon.free_seats}" if wagon.type == :passenger
+    puts "#{index} #{wagon.type} #{wagon.payload} #{wagon.free_payload}" if wagon.type == :cargo
+  }
   end
 
   def input
@@ -174,6 +187,8 @@ class Interface
       all_stations_list
     when 11
       stations_with_trains_list
+    when 12
+      wagon_list
     when 0
       abort
     else

@@ -17,7 +17,7 @@ class Route
   end
 
   def stations_list
-    @route_list.each(&:name)
+    @route_list.each { |x| x }
   end
 
   private
