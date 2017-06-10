@@ -32,6 +32,10 @@ class Station
     puts "Trains of type #{type}: #{result.length}"
   end
 
+  def trains_blk
+    @trains.each { |train| yield(train) }
+  end
+
   private
 
   def validate!
