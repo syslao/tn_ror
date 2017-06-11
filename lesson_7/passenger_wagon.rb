@@ -9,7 +9,9 @@ class PassengerWagon < Wagon
   end
 
   def take_seat
-    @booked_seats += 1
+    result = @booked_seats + 1
+    raise 'No more free seats' if result > @seats
+    @booked_seats = result
   end
 
   def free_seats

@@ -152,9 +152,12 @@ class Interface
 
   def wagon_list
     choise_train.wagons_blk(lambda_method)
+  rescue => e
+    puts e.message
+    return
   end
 
-  def lambda_method  #рубокоп ругается на многострочные лямды и говорит использовать метод, тут я в замешательстве
+  def lambda_method  #рубокоп ругается на многострочные лямды и говорит использовать метод, тут я в замешательстве`
   ->wagon, index {
     puts "#{index} #{wagon.type} #{wagon.seats} #{wagon.free_seats}" if wagon.type == :passenger
     puts "#{index} #{wagon.type} #{wagon.payload} #{wagon.free_payload}" if wagon.type == :cargo

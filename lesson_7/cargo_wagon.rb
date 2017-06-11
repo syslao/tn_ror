@@ -9,7 +9,9 @@ class CargoWagon < Wagon
   end
 
   def take_payload(value)
-    @taked_payload += value
+    result = @taked_payload + value
+    raise 'No more free value' if result > @payload
+    @taked_payload = result
   end
 
   def free_payload
