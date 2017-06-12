@@ -6,6 +6,10 @@ class Interface
     @routes = []
     @trains = []
     @wagons = []
+    @block = lambda do |wagon, index|
+      puts "#{index} #{wagon.type} #{wagon.seats} #{wagon.free_seats}" if wagon.type == :passenger
+      puts "#{index} #{wagon.type} #{wagon.payload} #{wagon.free_payload}" if wagon.type == :cargo
+    end
   end
 
   def menu
@@ -42,43 +46,31 @@ class Interface
   end
 
   def create_train
-    puts 'Введите номер поезда и тип (1 - пассажирский, 2 - грузовой) через запятую'
-    n, t = gets.split(',')
-    case t.to_i
-    when 1
-      new_train = PassengerTrain.new(n)
-      @trains.push(new_train)
-      puts "Пассажирский поезд номер #{new_train.number} создан!"
-    when 2
-      new_train = CargoTrain.new(n)
-      @trains.push(new_train)
-      puts "Грузовой поезд номер #{new_train.number} создан!"
-    else
-      puts 'Неизвестный тип поезда!'
-    end
-  rescue => e
-    puts e.message
-    create_train
+    puts 'Введите номер поезда и тип (pass - пассажирский, cargo - грузовой) через запятую'
+    number, type = gets.chomp.split(',')
+    create_train_object(number, type)
   end
 
   def edit_route
-    route = choise_route
     puts "Выберете действие:\n1 - добавить станцию\n2 - удалить станцию"
-    input = gets.chomp.to_i
-    if input == 1
-      puts 'Выберите станцию из списка'
-      @stations.each.with_index(1) { |val, index| puts "#{index} - #{val.name}" }
-      route.add_station(@stations[gets.chomp.to_i - 1])
-    elsif input == 2
-      puts 'Выберите станцию из мартшрута'
-      route.route_list.each.with_index(1) { |val, index| puts "#{index} - #{val.name}" }
-      route.del_station(route.route_list[gets.chomp.to_i - 1])
-    else
-      puts 'Неизвестный тип действия!'
-    end
+    edit_route_obj(gets.chomp.to_i)
   rescue => e
     puts e.message
     edit_route
+  end
+
+  def edit_route_obj(arg)
+    route = choise_route
+    puts 'Выберите станцию из списка'
+    if arg == 1
+      @stations.each.with_index(1) { |val, index| puts "#{index} - #{val.name}" }
+      route.add_station(@stations[gets.chomp.to_i - 1])
+    elsif arg == 2
+      route.route_list.each.with_index(1) { |val, index| puts "#{index} - #{val.name}" }
+      route.del_station(route.route_list[gets.chomp.to_i - 1])
+    else
+      raise 'Неизвестный тип действия!'
+    end
   end
 
   def move_train
@@ -111,20 +103,10 @@ class Interface
   end
 
   def create_wagon
-    puts 'Выберете тип вагона (1 - пассажирский, 2 - грузовой) и количество мест или объем через запятую'
+    puts 'Выберете тип вагона (pass - пассажирский, cargo - грузовой)'\
+    ' и количество мест или объем через запятую'
     t, v = gets.split(',')
-    case t.to_i
-    when 1
-      new_wagon = PassengerWagon.new(v)
-      @wagons.push(new_wagon)
-      puts "Пассажирский вагон на #{new_wagon.seats} мест создан!"
-    when 2
-      new_wagon = CargoWagon.new(v)
-      @wagons.push(new_wagon)
-      puts "Грузовой вагон с объемом #{new_wagon.payload} создан!"
-    else
-      puts 'Неизвестный тип вагона!'
-    end
+    create_wagon_object(t, v)
   rescue => e
     puts e.message
     create_train
@@ -144,24 +126,19 @@ class Interface
   end
 
   def stations_with_trains_list
-    choise_station.trains_blk { |train| puts "#{train.number} #{train.type} #{train.wagons.length}" }
+    choise_station.trains_blk do |train|
+      puts "#{train.number} #{train.type} #{train.wagons.length}"
+    end
   rescue => e
     puts e.message
     return
   end
 
   def wagon_list
-    choise_train.wagons_blk(lambda_method)
+    choise_train.wagons_blk @block
   rescue => e
     puts e.message
     return
-  end
-
-  def lambda_method  #рубокоп ругается на многострочные лямды и говорит использовать метод, тут я в замешательстве`
-  ->wagon, index {
-    puts "#{index} #{wagon.type} #{wagon.seats} #{wagon.free_seats}" if wagon.type == :passenger
-    puts "#{index} #{wagon.type} #{wagon.payload} #{wagon.free_payload}" if wagon.type == :cargo
-  }
   end
 
   def input
@@ -215,7 +192,9 @@ class Interface
 
   def choise_route
     puts 'Выберите маршрут из списка'
-    @routes.each.with_index(1) { |val, index| print "#{index}. #{val.route_list[0].name} - #{val.route_list[-1].name}" }
+    @routes.each.with_index(1) do |val, index|
+      print "#{index}. #{val.route_list[0].name} - #{val.route_list[-1].name}"
+    end
     @routes[gets.chomp.to_i - 1]
   end
 
@@ -223,5 +202,33 @@ class Interface
     puts 'Выберите вагон из списка'
     @wagons.each.with_index(1) { |val, index| puts "#{index} - #{val.type}" }
     @wagons[gets.chomp.to_i - 1]
+  end
+
+  def create_wagon_object(type, v)
+    if type == 'pass'
+      new_wagon = PassengerWagon.new(v)
+      puts "Пассажирский вагон на #{new_wagon.seats} мест создан!"
+      @wagons.push(new_wagon)
+    elsif type == 'cargo'
+      new_wagon = CargoWagon.new(v)
+      puts "Грузовой вагон с объемом #{new_wagon.payload} создан!"
+      @wagons.push(new_wagon)
+    else
+      raise 'Неизвестный тип вагона'
+    end
+  end
+
+  def create_train_object(number, type)
+    if type == 'pass'
+      new_train = PassengerTrain.new(number)
+      @trains.push(new_train)
+      puts "Пассажирский поезд номер #{new_train.number} создан!"
+    elsif type == 'cargo'
+      new_train = CargoTrain.new(number)
+      @trains.push(new_train)
+      puts "Грузовой поезд номер #{new_train.number} создан!"
+    else
+      raise 'Неизвестный тип поезда'
+    end
   end
 end
