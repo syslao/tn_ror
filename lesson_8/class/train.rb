@@ -1,11 +1,11 @@
 class Train
   include Manufacturer
   include InstanceCounter
-  include Validate
+  include Validation
   attr_reader :number, :current_station, :next_station, :prev_station, :wagons, :type
   attr_writer :speed
   @@instances = {}
-  NUMBER_FORMAT = /[\d[A-Z]]{3}-?[\d[A-Z]]{2}/i
+  NUMBER_FORMAT = /^[\d[A-Z]]{3}-?[\d[A-Z]]{2}$/i
 
   def initialize(number, speed = 0)
     @number = number.to_s.upcase
@@ -74,13 +74,5 @@ class Train
   def wagons_blk(block)
     raise 'Train is empty' if @wagons.nil?
     @wagons.each.with_index(1) { |wagon, index| block.call(wagon, index) }
-  end
-
-  private
-
-  def validate!
-    raise 'Number cant be nil' if number.nil?
-    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
-    true
   end
 end

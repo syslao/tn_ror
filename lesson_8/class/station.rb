@@ -1,8 +1,10 @@
 class Station
-  include Validate
+  include Validation
   attr_reader :name
   attr_accessor :trains
   @@instances = []
+
+  validate :name, :presence
 
   def initialize(name)
     @name = name
@@ -31,13 +33,5 @@ class Station
   def trains_blk
     raise 'Station is empty' if @trains.empty?
     @trains.each { |train| yield(train) }
-  end
-
-  private
-
-  def validate!
-    raise 'Name cant be nil' if name.nil?
-    raise 'Name should be at least 2 symbols' if name.length < 2
-    true
   end
 end

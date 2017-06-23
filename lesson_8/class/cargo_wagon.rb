@@ -1,6 +1,10 @@
 class CargoWagon < Wagon
-  include Validate
+  include Validation
   attr_reader :payload, :taked_payload
+
+  validate :payload, :presence
+  validate :payload, :quantity, 1
+
   def initialize(payload)
     @type = :cargo
     @payload = payload.to_i
@@ -16,13 +20,5 @@ class CargoWagon < Wagon
 
   def free_payload
     @payload - @taked_payload
-  end
-
-  private
-
-  def validate!
-    raise 'Value cant be nil' if payload.nil?
-    raise 'Value should be more than 0' if payload < 1
-    true
   end
 end

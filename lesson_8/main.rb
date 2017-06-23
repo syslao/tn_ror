@@ -2,7 +2,7 @@
 
 require_relative 'module/manufacturer'
 require_relative 'module/instancecounter'
-require_relative 'module/validate'
+require_relative 'module/validation'
 require_relative 'module/acessors'
 require_relative 'class/station'
 require_relative 'class/route'

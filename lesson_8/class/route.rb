@@ -1,7 +1,12 @@
 class Route
-  include Validate
-  attr_reader :route_list
+  include Validation
+  attr_reader :route_list, :first_station, :last_station
+
+  validate :first_station, :type, Station
+  validate :last_station, :type, Station
+
   def initialize(first_station, last_station)
+    @first_station, @last_station = first_station, last_station
     @route_list = [first_station, last_station]
     validate!
   end
@@ -18,13 +23,5 @@ class Route
 
   def stations_list
     @route_list.each { |x| x }
-  end
-
-  private
-
-  def validate!
-    raise 'Can`t add not station object to first station' if @route_list[0].class != Station
-    raise 'Can`t add not station object to last station' if @route_list[-1].class != Station
-    true
   end
 end
