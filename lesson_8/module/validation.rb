@@ -23,7 +23,7 @@ module Validation
   protected
     def validate!
       self.class.params.each do |param|
-        attribute = instance_variable_get("@#{param[:attr]}".to_sym)
+        attribute = instance_variable_get("@#{param[:attr]}")
         send param[:type], attribute, param[:args].first
       end
       true
@@ -37,8 +37,8 @@ module Validation
       raise 'object is different format' unless attribute =~ regexp
     end
 
-    def type(attribute, clss)
-      raise 'object is different class' unless attribute.is_a?(clss)
+    def type(attribute, klass)
+      raise 'object is different class' unless attribute.is_a?(klass)
     end
 
     def quantity(attribute, value)

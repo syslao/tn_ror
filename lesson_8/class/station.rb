@@ -1,5 +1,6 @@
 class Station
   include Validation
+  extend Acessors
   attr_reader :name
   attr_accessor :trains
   @@instances = []
